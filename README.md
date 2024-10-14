@@ -6,7 +6,7 @@ Este proyecto es una demo que muestra cómo **blockchain** puede ser utilizada p
 
 ## Tecnologías Utilizadas
 
-- **Blockchain**: Red privada usando Hyperledger Fabric o Ethereum.
+- **Blockchain**
 - **Contratos Inteligentes**: Para automatizar la verificación de entregas.
 - **API REST**: Para consultar el estado y historial de las mercancías.
 
