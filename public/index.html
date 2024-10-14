@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Blockchain Transport</title>
+</head>
+<body>
+    <h1>Registro de Eventos de Transporte</h1>
+    <form id="addEventForm">
+        <input type="text" id="productId" placeholder="ID del producto" required>
+        <input type="text" id="location" placeholder="Ubicación" required>
+        <input type="text" id="status" placeholder="Estado" required>
+        <input type="text" id="temperature" placeholder="Temperatura" required>
+        <button type="submit">Añadir Evento</button>
+    </form>
+
+    <h2>Ver Historial</h2>
+    <input type="text" id="historyProductId" placeholder="ID del producto" required>
+    <button id="viewHistoryBtn">Ver Historial</button>
+    
+    <div id="history"></div>
+
+    <script>
+        document.getElementById('addEventForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const productId = document.getElementById('productId').value;
+            const location = document.getElementById('location').value;
+            const status = document.getElementById('status').value;
+            const temperature = document.getElementById('temperature').value;
+
+            const response = await fetch('/addEvent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId, location, status, temperature })
+            });
+
+            const message = await response.text();
+            alert(message);
+            document.getElementById('addEventForm').reset();
+        });
+
+        document.getElementById('viewHistoryBtn').addEventListener('click', async () => {
+            const productId = document.getElementById('historyProductId').value;
+            const response = await fetch(`/history/${productId}`);
+            const history = await response.json();
+
+            const historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = '';
+            history.forEach((event, index) => {
+                historyDiv.innerHTML += `<p><strong>Evento ${index + 1}:</strong> Ubicación: ${event.location}, Estado: ${event.status}, Temperatura: ${event.temperature}, Timestamp: ${event.timestamp}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
